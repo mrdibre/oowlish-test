@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import App from "./Bootstrap";
+import Bootstrap from "./Bootstrap";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Bootstrap />
   </React.StrictMode>,
   document.getElementById("root")
 );
