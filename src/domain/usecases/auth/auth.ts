@@ -1,3 +1,5 @@
+import { UserModel } from "domain/models/user/user";
+
 export interface Authentication {
-  login(email: string, password: string): Promise<string>;
+  login(name: string, email: string): Promise<UserModel>;
 }

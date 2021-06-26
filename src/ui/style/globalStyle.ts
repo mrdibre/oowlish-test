@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: Roboto, sans-serif;
   }
 
-  html, body {
+  html, body, #root {
     width: 100%;
     height: 100%;
   }

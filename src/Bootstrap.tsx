@@ -1,19 +1,21 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
-import { Button, MuiThemeProvider } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { theme } from "ui/theme";
 import { GlobalStyle } from "ui/style/globalStyle";
 
-const App = () => (
+import App from "./factories/pages";
+
+const Bootstrap = () => (
   <ThemeProvider theme={theme}>
     <GlobalStyle />
+    <CssBaseline />
     <MuiThemeProvider theme={theme}>
-      <Button color="primary" variant="contained">
-        Teste
-      </Button>
+      <App />
     </MuiThemeProvider>
   </ThemeProvider>
 );
 
-export default App;
+export default Bootstrap;
