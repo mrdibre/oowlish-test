@@ -6,7 +6,7 @@ const makeLoginPageFactory = () => {
   const loginFactory = makeLoginFactory();
   const authFactory = makeAuthenticatedFactory();
 
-  return <LoginPage auth={authFactory} authentication={loginFactory} />;
+  return <LoginPage auth={authFactory} signIn={loginFactory} />;
 };
 
 export { makeLoginPageFactory };

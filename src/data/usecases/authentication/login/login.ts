@@ -1,12 +1,12 @@
 import { v4 as uuid } from "uuid";
 
 import { UserModel } from "domain/models/user/user";
-import { Authentication } from "domain/usecases/auth/auth";
+import { SignIn } from "domain/usecases/auth/auth";
 
 // eslint-disable-next-line
 import { Storage } from "../../../protocols/storage/storage";
 
-class Login implements Authentication {
+class Login implements SignIn {
   constructor(private readonly storage: Storage) {}
 
   /*

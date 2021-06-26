@@ -4,8 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
-import { Auth, Authentication } from "domain/usecases/auth/auth";
-
+import { Auth, SignIn } from "domain/usecases/auth/auth";
 import useUserContext from "presentation/context/user/useUserContext";
 import { withUserContext } from "presentation/context/user/withUserContext";
 
@@ -13,10 +12,10 @@ import { Container, Avatar, Button } from "./styles";
 
 interface LoginProps {
   auth: Auth;
-  authentication: Authentication;
+  signIn: SignIn;
 }
 
-const Login = ({ auth, authentication }: LoginProps) => {
+const Login = ({ auth, signIn }: LoginProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const { setUser } = useUserContext();
@@ -29,7 +28,7 @@ const Login = ({ auth, authentication }: LoginProps) => {
     };
 
   const onLogin = async () => {
-    const user = await authentication.login(name, email);
+    const user = await signIn.login(name, email);
     setUser(user);
     push("/");
   };

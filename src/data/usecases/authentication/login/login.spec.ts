@@ -11,7 +11,7 @@ jest.mock("uuid", () => ({
 const makeStorage = () => {
   class StorageStub implements Storage {
     clear(): void {}
-    delete(key: string, value: any): void {}
+    delete(key: string): void {}
     get(key: string): any {}
     set(key: string, value: any): void {}
   }
