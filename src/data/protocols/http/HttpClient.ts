@@ -12,8 +12,7 @@ export interface HttpRequest {
 }
 
 export interface HttpResponse {
-  data?: any;
-  error?: any;
+  data: any;
   statusCode: number;
 }
 

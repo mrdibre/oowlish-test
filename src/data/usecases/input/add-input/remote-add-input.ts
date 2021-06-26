@@ -12,11 +12,7 @@ class RemoteAddInput implements AddInput {
       method: HttpVerb.POST,
     });
 
-    if (input.statusCode === 201) {
-      return input.data as InputModel;
-    }
-
-    throw input.error;
+    return input.data;
   }
 }
 

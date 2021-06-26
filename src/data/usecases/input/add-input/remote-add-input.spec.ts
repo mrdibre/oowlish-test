@@ -1,5 +1,3 @@
-import Mockdate from "mockdate";
-
 import { InputModel, InputType } from "@oowlish/domain/models/input/input";
 import {
   HttpVerb,
@@ -40,14 +38,6 @@ const makeSut = () => {
 };
 
 describe("RemoteAddInput", () => {
-  beforeAll(() => {
-    Mockdate.set(new Date());
-  });
-
-  afterAll(() => {
-    Mockdate.reset();
-  });
-
   test("Should call HttpClient with correct values", async () => {
     const { sut, httpClient } = makeSut();
 
@@ -62,5 +52,29 @@ describe("RemoteAddInput", () => {
       url: "/input",
       method: HttpVerb.POST,
     });
+  });
+
+  test("Should return an input on success", async () => {
+    const { sut } = makeSut();
+
+    const { id, ...data } = makeFakeInput();
+
+    const input = await sut.add(data);
+
+    expect(input).toEqual({ id, ...data });
+  });
+
+  test("Should throws if HttpClient throws", async () => {
+    const { sut, httpClient } = makeSut();
+
+    jest.spyOn(httpClient, "request").mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const { id, ...data } = makeFakeInput();
+
+    const promise = sut.add(data);
+
+    await expect(promise).rejects.toThrow(new Error());
   });
 });
