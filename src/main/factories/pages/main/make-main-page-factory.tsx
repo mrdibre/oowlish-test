@@ -1,17 +1,12 @@
-import { SignOut } from "domain/usecases/auth/auth";
 import { MainPage } from "presentation/pages/main/Main";
+import { makeLogoutFactory } from "main/factories/usecases/authentication/logout/logout-factory";
 import { makeAuthenticatedFactory } from "main/factories/usecases/authentication/authenticated/authenticated";
 
 const makeMainPageFactory = () => {
   const authFactory = makeAuthenticatedFactory();
+  const signOutFactory = makeLogoutFactory();
 
-  class a implements SignOut {
-    logout(): Promise<void> {
-      return Promise.resolve(undefined);
-    }
-  }
-
-  return <MainPage signOut={new a()} auth={authFactory} />;
+  return <MainPage signOut={signOutFactory} auth={authFactory} />;
 };
 
 export { makeMainPageFactory };
