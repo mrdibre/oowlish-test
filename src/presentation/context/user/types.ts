@@ -1,6 +1,6 @@
-import { UserModel } from "domain/models/user/user";
-
 import React from "react";
+
+import { UserModel } from "domain/models/user/user";
 
 export interface UserContextProps {
   user?: UserModel;

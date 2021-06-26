@@ -1,3 +1,5 @@
+import { Storage } from "../../../protocols/storage/storage";
+
 import { Login } from "./login";
 
 jest.mock("uuid", () => ({
@@ -6,8 +8,20 @@ jest.mock("uuid", () => ({
   },
 }));
 
+const makeStorage = () => {
+  class StorageStub implements Storage {
+    clear(): void {}
+    delete(key: string, value: any): void {}
+    get(key: string): void {}
+    set(key: string, value: any): void {}
+  }
+
+  return new StorageStub();
+};
+
 const makeSut = () => {
-  const sut = new Login();
+  const storage = makeStorage();
+  const sut = new Login(storage);
 
   return { sut };
 };

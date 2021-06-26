@@ -1,5 +1,5 @@
-import { AxiosHttpClient } from "infra/http/axios-http-client/axios-http-client";
+import { AxiosAdapter } from "infra/http/axios/axios-adapter";
 
-const makeAxiosHttpClient = () => new AxiosHttpClient();
+const makeAxiosHttpClient = () => new AxiosAdapter();
 
 export { makeAxiosHttpClient };

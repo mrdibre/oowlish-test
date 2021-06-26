@@ -4,10 +4,10 @@ import {
   HttpClient,
   HttpRequest,
   HttpResponse,
-} from "data/protocols/http/HttpClient";
-import { Axios } from "infra/http/axios-http-client/axios";
+} from "data/protocols/http/http-client";
+import { Axios } from "infra/http/axios/axios";
 
-class AxiosHttpClient implements HttpClient {
+class AxiosAdapter implements HttpClient {
   async request({
     data,
     url,
@@ -31,4 +31,4 @@ class AxiosHttpClient implements HttpClient {
   }
 }
 
-export { AxiosHttpClient };
+export { AxiosAdapter };

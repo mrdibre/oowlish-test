@@ -1,7 +1,7 @@
 import { InputModel } from "domain/models/input/input";
 import { AddInput } from "domain/usecases/input/add-input";
 
-import { HttpClient, HttpVerb } from "data/protocols/http/HttpClient";
+import { HttpClient, HttpVerb } from "data/protocols/http/http-client";
 
 class RemoteAddInput implements AddInput {
   constructor(private readonly httpClient: HttpClient) {}

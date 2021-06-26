@@ -1,13 +1,13 @@
-import { InputModel, InputType } from "domain/models/input/input";
-
 import Mockdate from "mockdate";
+
+import { InputModel, InputType } from "domain/models/input/input";
 
 import {
   HttpVerb,
   HttpClient,
   HttpStatus,
   HttpRequest,
-} from "data/protocols/http/HttpClient";
+} from "data/protocols/http/http-client";
 
 import { RemoteAddInput } from "./remote-add-input";
 

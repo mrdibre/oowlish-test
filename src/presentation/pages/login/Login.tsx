@@ -1,10 +1,10 @@
-import { Authentication } from "domain/usecases/auth/auth";
-
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import { useHistory } from "react-router-dom";
+
+import { Authentication } from "domain/usecases/auth/auth";
 
 import useUserContext from "presentation/context/user/useUserContext";
 import { withUserContext } from "presentation/context/user/withUserContext";
@@ -33,10 +33,16 @@ const Login = ({ authentication }: LoginProps) => {
     push("/");
   };
 
+  useEffect(() => {
+    if (user) {
+      push("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [push]);
+
   return (
     <Container>
       <div>
-        {JSON.stringify(user)}
         <Avatar>
           <LockOutlinedIcon />
         </Avatar>

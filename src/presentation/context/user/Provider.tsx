@@ -1,6 +1,6 @@
-import { UserModel } from "domain/models/user/user";
-
 import { FC, PropsWithChildren, useMemo, useState } from "react";
+
+import { UserModel } from "domain/models/user/user";
 
 import { Provider as UserProvider } from "./context";
 
