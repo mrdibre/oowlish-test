@@ -1,3 +1,5 @@
+import Mockdate from "mockdate";
+
 import { InputModel, InputType } from "@oowlish/domain/models/input/input";
 import {
   HttpVerb,
@@ -18,7 +20,7 @@ const makeHttpClientStub = () => {
   class HttpClientStub implements HttpClient {
     async request(data: HttpRequest) {
       return {
-        statusCode: 201,
+        status: 201,
         data: makeFakeInput(),
       };
     }
@@ -38,6 +40,14 @@ const makeSut = () => {
 };
 
 describe("RemoteAddInput", () => {
+  beforeAll(() => {
+    Mockdate.set(new Date());
+  });
+
+  afterAll(() => {
+    Mockdate.reset();
+  });
+
   test("Should call HttpClient with correct values", async () => {
     const { sut, httpClient } = makeSut();
 

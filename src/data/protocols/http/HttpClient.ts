@@ -13,7 +13,7 @@ export interface HttpRequest {
 
 export interface HttpResponse {
   data: any;
-  statusCode: number;
+  status: number;
 }
 
 export interface HttpClient {
