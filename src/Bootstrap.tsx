@@ -6,7 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { theme } from "ui/theme";
 import { GlobalStyle } from "ui/style/globalStyle";
 
-import App from "./factories/pages";
+import App from "./main/factories/pages";
 
 const Bootstrap = () => (
   <ThemeProvider theme={theme}>

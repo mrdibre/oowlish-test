@@ -12,7 +12,7 @@ const makeStorage = () => {
   class StorageStub implements Storage {
     clear(): void {}
     delete(key: string, value: any): void {}
-    get(key: string): void {}
+    get(key: string): any {}
     set(key: string, value: any): void {}
   }
 

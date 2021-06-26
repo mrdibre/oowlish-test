@@ -1,39 +1,22 @@
-import "jest-localstorage-mock";
-
 import { LocalStorageAdapter } from "./local-storage-adapter";
 
-const makeSut = () => new LocalStorageAdapter();
-
 describe("LocalStorageAdapter", () => {
-  beforeEach(() => {
+  beforeAll(() => {
     localStorage.clear();
   });
 
-  test("Should call localStorage.setItem with correct values", async () => {
-    const sut = makeSut();
+  const sut = new LocalStorageAdapter();
 
-    sut.set("any_key", "any_value");
+  test("", () => {
+    expect(sut.get("valid_key")).toBeNull();
 
-    expect(localStorage.setItem).toHaveBeenCalledWith("any_key", "any_value");
-  });
+    sut.set("valid_key", "valid_value");
+    expect(sut.get("valid_key")).toBe("valid_value");
 
-  test("Should call localStorage.removeItem with correct values", async () => {
-    const sut = makeSut();
+    sut.set("valid_json", { valid: "value" });
+    expect(sut.get("valid_json")).toEqual({ valid: "value" });
 
-    sut.delete("any_key");
-
-    expect(localStorage.removeItem).toHaveBeenCalledWith("any_key");
-  });
-
-  test("Should call localStorage.getItem with correct value", async () => {
-    const sut = makeSut();
-
-    const getItemSpy = jest
-      .spyOn(localStorage, "getItem")
-      .mockReturnValueOnce("any_value");
-
-    sut.get("any_key");
-
-    expect(getItemSpy).toHaveBeenCalledWith("any_key");
+    sut.delete("valid_key");
+    expect(sut.get("valid_key")).toBeNull();
   });
 });

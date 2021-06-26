@@ -21,7 +21,7 @@ class Login implements Authentication {
       email,
     };
 
-    this.storage.set("user", JSON.stringify(user));
+    this.storage.set("user", user);
 
     return user;
   }

@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 
-import { Authentication } from "domain/usecases/auth/auth";
+import { Auth, Authentication } from "domain/usecases/auth/auth";
 
 import useUserContext from "presentation/context/user/useUserContext";
 import { withUserContext } from "presentation/context/user/withUserContext";
@@ -12,13 +12,14 @@ import { withUserContext } from "presentation/context/user/withUserContext";
 import { Container, Avatar, Button } from "./styles";
 
 interface LoginProps {
+  auth: Auth;
   authentication: Authentication;
 }
 
-const Login = ({ authentication }: LoginProps) => {
+const Login = ({ auth, authentication }: LoginProps) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const { user, setUser } = useUserContext();
+  const { setUser } = useUserContext();
   const { push } = useHistory();
 
   const onChange =
@@ -34,9 +35,14 @@ const Login = ({ authentication }: LoginProps) => {
   };
 
   useEffect(() => {
-    if (user) {
-      push("/");
-    }
+    (async () => {
+      const authenticated = await auth.getAuthenticated();
+
+      if (authenticated) {
+        setUser(authenticated);
+        push("/");
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [push]);
 

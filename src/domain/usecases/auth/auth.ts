@@ -4,6 +4,7 @@ export interface Authentication {
   login(name: string, email: string): Promise<UserModel>;
 }
 
-export interface Authenticated {
-  getAuthenticated(): Promise<UserModel>;
+export interface Auth {
+  isAuthenticated(): Promise<boolean>;
+  getAuthenticated(): Promise<UserModel | null>;
 }
