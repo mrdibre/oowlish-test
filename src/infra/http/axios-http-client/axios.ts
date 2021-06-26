@@ -8,8 +8,10 @@ class Axios {
       return Axios._instance;
     }
 
+    const url = process.env.REACT_APP_BASE_HTTP_URL || "localhost:5000";
+
     return (Axios._instance = axios.create({
-      baseURL: process.env.REACT_APP_BASE_HTTP_URL || "localhost:5000",
+      baseURL: `${url}/api`,
     }));
   }
 }

@@ -4,6 +4,13 @@ export enum HttpVerb {
   POST = "POST",
 }
 
+export enum HttpStatus {
+  OK = 200,
+  CREATED = 201,
+  BAD_REQUEST = 400,
+  ERROR = 500,
+}
+
 export interface HttpRequest {
   url: string;
   data?: any;
@@ -13,7 +20,7 @@ export interface HttpRequest {
 
 export interface HttpResponse {
   data: any;
-  status: number;
+  status: HttpStatus;
 }
 
 export interface HttpClient {

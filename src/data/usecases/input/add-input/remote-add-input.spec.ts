@@ -4,6 +4,7 @@ import { InputModel, InputType } from "@oowlish/domain/models/input/input";
 import {
   HttpVerb,
   HttpClient,
+  HttpStatus,
   HttpRequest,
 } from "@oowlish/data/protocols/http/HttpClient";
 
@@ -20,7 +21,7 @@ const makeHttpClientStub = () => {
   class HttpClientStub implements HttpClient {
     async request(data: HttpRequest) {
       return {
-        status: 201,
+        status: HttpStatus.CREATED,
         data: makeFakeInput(),
       };
     }
