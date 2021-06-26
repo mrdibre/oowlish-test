@@ -1,6 +1,7 @@
-import { InputModel } from "@oowlish/domain/models/input/input";
-import { AddInput } from "@oowlish/domain/usecases/input/add-input";
-import { HttpClient, HttpVerb } from "@oowlish/data/protocols/http/HttpClient";
+import { InputModel } from "domain/models/input/input";
+import { AddInput } from "domain/usecases/input/add-input";
+
+import { HttpClient, HttpVerb } from "data/protocols/http/HttpClient";
 
 class RemoteAddInput implements AddInput {
   constructor(private readonly httpClient: HttpClient) {}

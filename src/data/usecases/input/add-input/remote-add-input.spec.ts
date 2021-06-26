@@ -1,12 +1,13 @@
+import { InputModel, InputType } from "domain/models/input/input";
+
 import Mockdate from "mockdate";
 
-import { InputModel, InputType } from "@oowlish/domain/models/input/input";
 import {
   HttpVerb,
   HttpClient,
   HttpStatus,
   HttpRequest,
-} from "@oowlish/data/protocols/http/HttpClient";
+} from "data/protocols/http/HttpClient";
 
 import { RemoteAddInput } from "./remote-add-input";
 

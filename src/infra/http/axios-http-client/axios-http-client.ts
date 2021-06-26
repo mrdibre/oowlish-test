@@ -4,8 +4,8 @@ import {
   HttpClient,
   HttpRequest,
   HttpResponse,
-} from "@oowlish/data/protocols/http/HttpClient";
-import { Axios } from "@oowlish/infra/http/axios-http-client/axios";
+} from "data/protocols/http/HttpClient";
+import { Axios } from "infra/http/axios-http-client/axios";
 
 class AxiosHttpClient implements HttpClient {
   async request({

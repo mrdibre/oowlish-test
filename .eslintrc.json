@@ -21,7 +21,7 @@
     },
     "plugins": ["@typescript-eslint", "prettier", "react", "react-hooks", "import"],
     "settings": {
-        "import/internal-regex": "^(@oowlish)/"
+        "import/internal-regex": "^(data|domain|factories|infra|presentation|ui)/"
     },
     "rules": {
         "react/react-in-jsx-scope": "off",

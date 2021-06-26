@@ -1,12 +1,13 @@
-// eslint-disable-next-line no-undef
 module.exports = {
   roots: ["<rootDir>/src"],
-  collectCoverageFrom: ["<rootDir>/src/**/*.ts"],
   coverageDirectory: "coverage",
+  testPathIgnorePatterns: ["<rootDir>/node_modules/"],
+  testEnvironment: "jsdom",
   transform: {
-    ".+\\.ts$": "ts-jest",
+    ".+\\.(ts|tsx)$": "ts-jest",
   },
   moduleNameMapper: {
-    "@oowlish/(.*)": "<rootDir>/src/$1",
+    "^(data|domain|factories|infra|presentation|ui)(.*)$":
+      "<rootDir>/src/$1/$2",
   },
 };
