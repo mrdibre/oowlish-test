@@ -7,6 +7,6 @@ export interface InputModel {
   id: string;
   date: number;
   userId: string;
-  reason?: string;
+  observation?: string;
   type: keyof typeof InputType;
 }

@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
 
-import { Card } from "../../components/Card/Card";
-import { Layout } from "../../components/Layout/Layout";
 import { Auth, SignOut } from "domain/usecases/auth/auth";
+import { Layout } from "presentation/components/Layout/Layout";
 import useUserContext from "presentation/context/user/useUserContext";
+import { AddButton } from "presentation/components/AddButton/AddButton";
 import withUserContext from "presentation/context/user/withUserContext";
+
+import Timing from "./Timing";
 
 interface MainProps {
   auth: Auth;
@@ -14,6 +15,8 @@ interface MainProps {
 }
 
 const Main = ({ auth, signOut }: MainProps) => {
+  const [modalIsOpened, setModalIsOpened] = useState(false);
+
   const { user, setUser } = useUserContext();
   const { push } = useHistory();
 
@@ -21,6 +24,9 @@ const Main = ({ auth, signOut }: MainProps) => {
     await signOut.logout();
     push("/login");
   };
+
+  const onOpenTiming = () => setModalIsOpened(true);
+  const onCloseTiming = () => setModalIsOpened(false);
 
   useEffect(() => {
     (async () => {
@@ -35,29 +41,9 @@ const Main = ({ auth, signOut }: MainProps) => {
   }, [auth, push, setUser, user]);
 
   return (
-    <Layout onLogout={onLogout}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6} lg={3}>
-          <Card title="Worked Hours">
-            <p>Horas Trabalhadas</p>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <Card title="Arrivals">
-            <p>Horas Trabalhadas</p>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <Card title="Exitings">
-            <p>Horas Trabalhadas</p>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={6} lg={3}>
-          <Card title="Lunch Breaks">
-            <p>Horas Trabalhadas</p>
-          </Card>
-        </Grid>
-      </Grid>
+    <Layout username={user?.name ?? ""} onLogout={onLogout}>
+      <Timing opened={modalIsOpened} onClose={onCloseTiming} />
+      <AddButton onAskBreak={() => {}} onAskTiming={onOpenTiming} />
     </Layout>
   );
 };

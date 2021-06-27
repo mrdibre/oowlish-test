@@ -13,7 +13,7 @@ class LocalStorageAdapter implements Storage {
     const value = localStorage.getItem(key);
 
     try {
-      return JSON.parse(value!);
+      return JSON.parse(value as any);
     } catch (e) {
       return value;
     }

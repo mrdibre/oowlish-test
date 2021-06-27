@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Badge from "@material-ui/core/Badge";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -21,12 +22,36 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface LayoutProps {
+  username: string;
   children: ReactNode;
   onLogout: () => void;
 }
 
-const Layout = ({ children, onLogout }: LayoutProps) => {
+const Layout = ({ username, children, onLogout }: LayoutProps) => {
+  const [timer, setTimer] = useState("");
   const classes = useStyles();
+
+  useEffect(() => {
+    const syncTimer = () => {
+      const date = new Intl.DateTimeFormat("pt-BR", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      });
+
+      setTimer(date.format(new Date()));
+    };
+
+    syncTimer();
+
+    const id = setInterval(syncTimer, 60000);
+
+    return () => {
+      clearInterval(id);
+    };
+  }, []);
 
   return (
     <div>
@@ -41,6 +66,9 @@ const Layout = ({ children, onLogout }: LayoutProps) => {
           >
             Dashboard
           </Typography>
+          <Typography noWrap variant="body2" color="inherit">
+            {username}
+          </Typography>
           <Tooltip title="Logout">
             <IconButton color="inherit" onClick={onLogout}>
               <Badge color="secondary">
@@ -53,7 +81,22 @@ const Layout = ({ children, onLogout }: LayoutProps) => {
       <main>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <div>{children}</div>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography align="center" variant="h5">
+                {timer}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              justify="center"
+              alignItems="center"
+              alignContent="center"
+            >
+              {children}
+            </Grid>
+          </Grid>
         </Container>
       </main>
     </div>

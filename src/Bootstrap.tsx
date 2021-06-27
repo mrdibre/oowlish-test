@@ -1,19 +1,26 @@
 import React from "react";
+import DateFnsUtils from "@date-io/date-fns";
 import { ThemeProvider } from "styled-components";
 import { MuiThemeProvider } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
-import { theme } from "ui/theme";
-import { GlobalStyle } from "ui/style/globalStyle";
+import { theme } from "config/theme";
+import { registerFirebase } from "config/firebase";
+import { GlobalStyle } from "config/style/globalStyle";
 
 import App from "./main/factories/pages";
+
+registerFirebase();
 
 const Bootstrap = () => (
   <ThemeProvider theme={theme}>
     <GlobalStyle />
     <CssBaseline />
     <MuiThemeProvider theme={theme}>
-      <App />
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <App />
+      </MuiPickersUtilsProvider>
     </MuiThemeProvider>
   </ThemeProvider>
 );
