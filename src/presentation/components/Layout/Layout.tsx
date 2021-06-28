@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useState } from "react";
+import Grid from "@material-ui/core/Grid";
 import Badge from "@material-ui/core/Badge";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,7 +9,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { Grid } from "@material-ui/core";
+import { UserModel } from "domain/models/user/user";
+import { formatDate } from "../../helpers/date";
 
 const useStyles = makeStyles((theme) => ({
   appBarSpacer: theme.mixins.toolbar,
@@ -22,27 +24,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface LayoutProps {
-  username: string;
+  user?: UserModel;
   children: ReactNode;
   onLogout: () => void;
 }
 
-const Layout = ({ username, children, onLogout }: LayoutProps) => {
+const Layout = ({ user, children, onLogout }: LayoutProps) => {
   const [timer, setTimer] = useState("");
   const classes = useStyles();
 
   useEffect(() => {
-    const syncTimer = () => {
-      const date = new Intl.DateTimeFormat("pt-BR", {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      });
-
-      setTimer(date.format(new Date()));
-    };
+    const syncTimer = () => setTimer(formatDate(new Date()));
 
     syncTimer();
 
@@ -67,7 +59,7 @@ const Layout = ({ username, children, onLogout }: LayoutProps) => {
             Dashboard
           </Typography>
           <Typography noWrap variant="body2" color="inherit">
-            {username}
+            {user?.name}
           </Typography>
           <Tooltip title="Logout">
             <IconButton color="inherit" onClick={onLogout}>
@@ -87,14 +79,8 @@ const Layout = ({ username, children, onLogout }: LayoutProps) => {
                 {timer}
               </Typography>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              justify="center"
-              alignItems="center"
-              alignContent="center"
-            >
-              {children}
+            <Grid item xs={12}>
+              {!!user && children}
             </Grid>
           </Grid>
         </Container>

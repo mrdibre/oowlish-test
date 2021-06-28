@@ -1,21 +1,28 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 
+import { InputModel } from "domain/models/input/input";
 import { Auth, SignOut } from "domain/usecases/auth/auth";
+import { AddInput } from "domain/usecases/input/add-input";
 import { Layout } from "presentation/components/Layout/Layout";
 import useUserContext from "presentation/context/user/useUserContext";
-import { AddButton } from "presentation/components/AddButton/AddButton";
 import withUserContext from "presentation/context/user/withUserContext";
+import { LoadInputsByUserId } from "domain/usecases/input/load-inputs-by-user-id";
 
 import Timing from "./Timing";
+import InputList from "./InputList";
 
 interface MainProps {
   auth: Auth;
   signOut: SignOut;
+  addInput: AddInput;
+  loadInputsByUserId: LoadInputsByUserId;
 }
 
-const Main = ({ auth, signOut }: MainProps) => {
-  const [modalIsOpened, setModalIsOpened] = useState(false);
+const Main = ({ auth, addInput, signOut, loadInputsByUserId }: MainProps) => {
+  const [loadingInputs, setLoadingInputs] = useState(false);
+  const [inputsByUser, setInputsByUser] = useState<InputModel[]>([]);
+  const lastInput = useRef<InputModel>();
 
   const { user, setUser } = useUserContext();
   const { push } = useHistory();
@@ -25,25 +32,46 @@ const Main = ({ auth, signOut }: MainProps) => {
     push("/login");
   };
 
-  const onOpenTiming = () => setModalIsOpened(true);
-  const onCloseTiming = () => setModalIsOpened(false);
+  const onAddInput = (input: InputModel) => {
+    lastInput.current = input;
+    setInputsByUser((init) => [...init, input]);
+  };
+
+  const fetchInputsByUser = useCallback(
+    (id: string) => {
+      setLoadingInputs(true);
+      loadInputsByUserId.load(id).then((inputs) => {
+        setInputsByUser(inputs);
+        setLoadingInputs(false);
+
+        lastInput.current = inputs[inputs.length - 1];
+      });
+    },
+    [loadInputsByUserId]
+  );
 
   useEffect(() => {
-    (async () => {
-      const authenticated = await auth.getAuthenticated();
+    if (!user) {
+      auth.getAuthenticated().then((authenticated) => {
+        if (authenticated) {
+          fetchInputsByUser(authenticated.id);
+          return setUser(authenticated);
+        }
 
-      if (authenticated) {
-        return !user && setUser(authenticated);
-      }
-
-      push("/login");
-    })();
-  }, [auth, push, setUser, user]);
+        push("/login");
+      });
+    }
+  }, [auth, fetchInputsByUser, push, setUser, user]);
 
   return (
-    <Layout username={user?.name ?? ""} onLogout={onLogout}>
-      <Timing opened={modalIsOpened} onClose={onCloseTiming} />
-      <AddButton onAskBreak={() => {}} onAskTiming={onOpenTiming} />
+    <Layout user={user} onLogout={onLogout}>
+      <Timing
+        addInput={addInput}
+        onAddInput={onAddInput}
+        lastInput={lastInput.current}
+      />
+
+      <InputList inputs={inputsByUser} loading={loadingInputs} />
     </Layout>
   );
 };

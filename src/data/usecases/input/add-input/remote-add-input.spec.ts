@@ -2,14 +2,8 @@ import Mockdate from "mockdate";
 
 import { InputModel, InputType } from "domain/models/input/input";
 
-import {
-  HttpVerb,
-  HttpClient,
-  HttpStatus,
-  HttpRequest,
-} from "data/protocols/http/http-client";
-
 import { RemoteAddInput } from "./remote-add-input";
+import { AddInputRepository } from "../../../protocols/input/add-input-repository";
 
 const makeFakeInput = (): InputModel => ({
   id: "valid_id",
@@ -18,26 +12,23 @@ const makeFakeInput = (): InputModel => ({
   type: InputType.EXITING,
 });
 
-const makeHttpClientStub = () => {
-  class HttpClientStub implements HttpClient {
-    async request(data: HttpRequest) {
-      return {
-        status: HttpStatus.CREATED,
-        data: makeFakeInput(),
-      };
+const makeAddInputRepository = () => {
+  class AddInputRepositoryStub implements AddInputRepository {
+    async add(input: Omit<InputModel, "id">): Promise<InputModel> {
+      return makeFakeInput();
     }
   }
 
-  return new HttpClientStub();
+  return new AddInputRepositoryStub();
 };
 
 const makeSut = () => {
-  const httpClient = makeHttpClientStub();
-  const sut = new RemoteAddInput(httpClient);
+  const addInputRepository = makeAddInputRepository();
+  const sut = new RemoteAddInput(addInputRepository);
 
   return {
     sut,
-    httpClient,
+    addInputRepository,
   };
 };
 
@@ -50,20 +41,16 @@ describe("RemoteAddInput", () => {
     Mockdate.reset();
   });
 
-  test("Should call HttpClient with correct values", async () => {
-    const { sut, httpClient } = makeSut();
+  test("Should call AddInputRepository with correct values", async () => {
+    const { sut, addInputRepository } = makeSut();
 
-    const { id: _, ...data } = makeFakeInput();
+    const spy = jest.spyOn(addInputRepository, "add");
 
-    const spy = jest.spyOn(httpClient, "request");
+    const { id, ...data } = makeFakeInput();
 
     await sut.add(data);
 
-    expect(spy).toHaveBeenCalledWith({
-      data,
-      url: "/input",
-      method: HttpVerb.POST,
-    });
+    expect(spy).toHaveBeenCalledWith(data);
   });
 
   test("Should return an input on success", async () => {
@@ -74,19 +61,5 @@ describe("RemoteAddInput", () => {
     const input = await sut.add(data);
 
     expect(input).toEqual({ id, ...data });
-  });
-
-  test("Should throws if HttpClient throws", async () => {
-    const { sut, httpClient } = makeSut();
-
-    jest.spyOn(httpClient, "request").mockImplementationOnce(() => {
-      throw new Error();
-    });
-
-    const { id, ...data } = makeFakeInput();
-
-    const promise = sut.add(data);
-
-    await expect(promise).rejects.toThrow(new Error());
   });
 });

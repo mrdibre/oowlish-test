@@ -1,9 +1,12 @@
 import { AddInput } from "domain/usecases/input/add-input";
 
 import { RemoteAddInput } from "data/usecases/input/add-input/remote-add-input";
-import { makeAxiosHttpClient } from "main/factories/http/axios/axios-http-client-factory";
+import { makeFirebaseAddInputRepositoryFactory } from "main/factories/repositories/input/firebase-add-input-repository-factory";
 
-const makeRemoteAddInput = (): AddInput =>
-  new RemoteAddInput(makeAxiosHttpClient());
+const makeRemoteAddInput = (): AddInput => {
+  const addInputRepository = makeFirebaseAddInputRepositoryFactory();
+
+  return new RemoteAddInput(addInputRepository);
+};
 
 export { makeRemoteAddInput };

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { addHours } from "date-fns";
 import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -6,16 +7,17 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import {
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  SelectProps,
+} from "@material-ui/core";
 
 import { Container } from "./style";
 import TimePicker from "../TimePicker";
-
-interface ModalTimingProps {
-  opened: boolean;
-  loading: boolean;
-  onClose: () => void;
-  onConfirm: (date: Date, observation: string) => Promise<void>;
-}
+import { ModalTimingProps, TimingType } from "./types";
 
 const ModalTiming = ({
   opened,
@@ -23,15 +25,31 @@ const ModalTiming = ({
   onClose,
   onConfirm,
 }: ModalTimingProps) => {
+  const [type, setType] = useState(TimingType.TIMING);
   const [observation, setObservation] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleConfirm = () => {
-    onConfirm(selectedDate, observation).then(() => {
+    const isLunch = type === TimingType.LUNCH;
+
+    const payload = {
+      type,
+      observation,
+      date: +selectedDate,
+      ...(isLunch && {
+        duration: +addHours(selectedDate, 1),
+      }),
+    };
+
+    onConfirm(payload).then(() => {
       setObservation("");
+      setType(TimingType.TIMING);
       setSelectedDate(new Date());
     });
   };
+
+  const onChangeType: SelectProps["onChange"] = (event) =>
+    setType(event.target.value as TimingType);
 
   return (
     <Dialog open={opened} onClose={onClose} aria-labelledby="form-dialog-title">
@@ -48,6 +66,15 @@ const ModalTiming = ({
             onChange={setSelectedDate}
           />
         </Container>
+
+        <FormControl fullWidth variant="outlined">
+          <InputLabel>Tipo</InputLabel>
+          <Select value={type} label="Tipo" onChange={onChangeType}>
+            <MenuItem value={TimingType.TIMING}>Ponto</MenuItem>
+            <MenuItem value={TimingType.LUNCH}>Pausa Almoço</MenuItem>
+          </Select>
+        </FormControl>
+
         <Container>
           <TextField
             fullWidth

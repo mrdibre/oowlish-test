@@ -5,9 +5,9 @@ import { MuiThemeProvider } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
-import { theme } from "config/theme";
+import { theme } from "config/ui/theme";
 import { registerFirebase } from "config/firebase";
-import { GlobalStyle } from "config/style/globalStyle";
+import { GlobalStyle } from "config/ui/style/globalStyle";
 
 import App from "./main/factories/pages";
 

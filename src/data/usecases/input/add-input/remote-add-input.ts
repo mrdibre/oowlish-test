@@ -1,19 +1,12 @@
 import { InputModel } from "domain/models/input/input";
 import { AddInput } from "domain/usecases/input/add-input";
-
-import { HttpClient, HttpVerb } from "data/protocols/http/http-client";
+import { AddInputRepository } from "data/protocols/input/add-input-repository";
 
 class RemoteAddInput implements AddInput {
-  constructor(private readonly httpClient: HttpClient) {}
+  constructor(private readonly addInputRepository: AddInputRepository) {}
 
   async add(data: Omit<InputModel, "id">): Promise<InputModel> {
-    const input = await this.httpClient.request({
-      data,
-      url: "/input",
-      method: HttpVerb.POST,
-    });
-
-    return input.data;
+    return this.addInputRepository.add(data);
   }
 }
 

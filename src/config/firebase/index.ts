@@ -12,4 +12,6 @@ const firebaseConfig = {
 
 const registerFirebase = () => firebase.initializeApp(firebaseConfig);
 
-export { firebaseConfig, registerFirebase };
+const getDatabase = () => firebase.database();
+
+export { firebaseConfig, registerFirebase, getDatabase };
