@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { InputModel } from "domain/models/input/input";
@@ -7,22 +7,31 @@ import { AddInput } from "domain/usecases/input/add-input";
 import { Layout } from "presentation/components/Layout/Layout";
 import useUserContext from "presentation/context/user/useUserContext";
 import withUserContext from "presentation/context/user/withUserContext";
+import { ReportWorkedHours } from "domain/usecases/report/report-worked-hours";
 import { LoadInputsByUserId } from "domain/usecases/input/load-inputs-by-user-id";
 
 import Timing from "./Timing";
 import InputList from "./InputList";
+import { WorkedHours } from "./WorkedHours";
 
 interface MainProps {
   auth: Auth;
   signOut: SignOut;
   addInput: AddInput;
+  reportWorkedHours: ReportWorkedHours;
   loadInputsByUserId: LoadInputsByUserId;
 }
 
-const Main = ({ auth, addInput, signOut, loadInputsByUserId }: MainProps) => {
+const Main = ({
+  auth,
+  signOut,
+  addInput,
+  reportWorkedHours,
+  loadInputsByUserId,
+}: MainProps) => {
+  const [lastInput, setLastInput] = useState<InputModel>();
   const [loadingInputs, setLoadingInputs] = useState(false);
   const [inputsByUser, setInputsByUser] = useState<InputModel[]>([]);
-  const lastInput = useRef<InputModel>();
 
   const { user, setUser } = useUserContext();
   const { push } = useHistory();
@@ -33,7 +42,7 @@ const Main = ({ auth, addInput, signOut, loadInputsByUserId }: MainProps) => {
   };
 
   const onAddInput = (input: InputModel) => {
-    lastInput.current = input;
+    setLastInput(input);
     setInputsByUser((init) => [...init, input]);
   };
 
@@ -43,11 +52,12 @@ const Main = ({ auth, addInput, signOut, loadInputsByUserId }: MainProps) => {
       loadInputsByUserId.load(id).then((inputs) => {
         setInputsByUser(inputs);
         setLoadingInputs(false);
+        reportWorkedHours.reportHours(inputs).then(console.log);
 
-        lastInput.current = inputs[inputs.length - 1];
+        setLastInput(inputs[inputs.length - 1]);
       });
     },
-    [loadInputsByUserId]
+    [loadInputsByUserId, reportWorkedHours]
   );
 
   useEffect(() => {
@@ -67,11 +77,16 @@ const Main = ({ auth, addInput, signOut, loadInputsByUserId }: MainProps) => {
     <Layout user={user} onLogout={onLogout}>
       <Timing
         addInput={addInput}
+        lastInput={lastInput}
         onAddInput={onAddInput}
-        lastInput={lastInput.current}
       />
 
       <InputList inputs={inputsByUser} loading={loadingInputs} />
+
+      <WorkedHours
+        inputs={inputsByUser}
+        reportWorkedHours={reportWorkedHours}
+      />
     </Layout>
   );
 };

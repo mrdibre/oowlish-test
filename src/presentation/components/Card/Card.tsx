@@ -12,7 +12,7 @@ const Card = ({ title, children }: CardProps) => (
   <CardMui variant="outlined">
     <CardContent>
       <Typography variant="body2">{title}</Typography>
-      <CardContent>{children}</CardContent>
+      {children}
     </CardContent>
   </CardMui>
 );

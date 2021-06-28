@@ -73,15 +73,13 @@ const Layout = ({ user, children, onLogout }: LayoutProps) => {
       <main>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container>
+          <Grid spacing={4} container>
             <Grid item xs={12}>
               <Typography align="center" variant="h5">
                 {timer}
               </Typography>
             </Grid>
-            <Grid item xs={12}>
-              {!!user && children}
-            </Grid>
+            {!!user && children}
           </Grid>
         </Container>
       </main>
