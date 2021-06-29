@@ -4,9 +4,9 @@ import { ReportWorkedHours } from "domain/usecases/report/report-worked-hours";
 class InMemoryReportWorkedHours implements ReportWorkedHours {
   private getTimingDurations(data: InputModel[]): number[] {
     return data.map((input, index, inputs) => {
-      if (input.type === InputType.ARRIVE) {
+      if (input.type !== InputType.ARRIVE) {
         const initialDate = input.date;
-        const finalDate = inputs[index + 1]?.date ?? Date.now();
+        const finalDate = inputs[index - 1]?.date ?? Date.now();
 
         return Math.abs(initialDate - finalDate);
       }
