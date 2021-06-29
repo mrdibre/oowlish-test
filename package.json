@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "fix": "rm -rf node_modules && yarn",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest --passWithNoTests -c jest.config.js",
