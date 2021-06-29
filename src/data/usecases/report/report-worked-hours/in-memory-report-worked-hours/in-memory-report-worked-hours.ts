@@ -1,7 +1,7 @@
 import { InputModel, InputType } from "domain/models/input/input";
-import { ReportWorkedHours } from "domain/usecases/report/report-worked-hours";
+import { ReportHours } from "domain/usecases/report/report-hours";
 
-class InMemoryReportWorkedHours implements ReportWorkedHours {
+class InMemoryReportWorkedHours implements ReportHours {
   private getTimingDurations(data: InputModel[]): number[] {
     return data.map((input, index, inputs) => {
       if (input.type !== InputType.ARRIVE) {
@@ -19,7 +19,7 @@ class InMemoryReportWorkedHours implements ReportWorkedHours {
     return durations.reduce((acc, curr) => acc + curr, 0);
   }
 
-  async reportHours(inputs: InputModel[]): Promise<number> {
+  async report(inputs: InputModel[]): Promise<number> {
     const durations = this.getTimingDurations(inputs);
 
     return this.calculateTiming(durations);

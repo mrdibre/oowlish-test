@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { addHours } from "date-fns";
 import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -37,7 +36,7 @@ const ModalTiming = ({
       observation,
       date: +selectedDate,
       ...(isLunch && {
-        duration: +addHours(selectedDate, 1),
+        duration: 3600000,
       }),
     };
 

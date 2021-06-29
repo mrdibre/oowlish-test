@@ -54,7 +54,7 @@ const InputList = ({ loading, inputs }: InputProps) => (
               </ListItem>
             ))
           ) : (
-            <ListItem>
+            <ListItem dense>
               <ListItemText primary="Nenhum registro encontrado." />
             </ListItem>
           )}

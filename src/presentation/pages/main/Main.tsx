@@ -5,20 +5,22 @@ import { InputModel } from "domain/models/input/input";
 import { Auth, SignOut } from "domain/usecases/auth/auth";
 import { AddInput } from "domain/usecases/input/add-input";
 import { Layout } from "presentation/components/Layout/Layout";
+import { ReportHours } from "domain/usecases/report/report-hours";
 import useUserContext from "presentation/context/user/useUserContext";
 import withUserContext from "presentation/context/user/withUserContext";
-import { ReportWorkedHours } from "domain/usecases/report/report-worked-hours";
 import { LoadInputsByUserId } from "domain/usecases/input/load-inputs-by-user-id";
 
 import Timing from "./Timing";
 import InputList from "./InputList";
 import { WorkedHours } from "./WorkedHours";
+import { LunchHours } from "./LunchHours";
 
 interface MainProps {
   auth: Auth;
   signOut: SignOut;
   addInput: AddInput;
-  reportWorkedHours: ReportWorkedHours;
+  reportLunchHours: ReportHours;
+  reportWorkedHours: ReportHours;
   loadInputsByUserId: LoadInputsByUserId;
 }
 
@@ -26,6 +28,7 @@ const Main = ({
   auth,
   signOut,
   addInput,
+  reportLunchHours,
   reportWorkedHours,
   loadInputsByUserId,
 }: MainProps) => {
@@ -52,12 +55,11 @@ const Main = ({
       loadInputsByUserId.load(id).then((inputs) => {
         setInputsByUser(inputs);
         setLoadingInputs(false);
-        reportWorkedHours.reportHours(inputs).then(console.log);
 
         setLastInput(inputs[inputs.length - 1]);
       });
     },
-    [loadInputsByUserId, reportWorkedHours]
+    [loadInputsByUserId]
   );
 
   useEffect(() => {
@@ -87,6 +89,7 @@ const Main = ({
         inputs={inputsByUser}
         reportWorkedHours={reportWorkedHours}
       />
+      <LunchHours inputs={inputsByUser} reportLunchHours={reportLunchHours} />
     </Layout>
   );
 };

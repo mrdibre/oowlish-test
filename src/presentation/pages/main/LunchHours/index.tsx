@@ -4,23 +4,23 @@ import { Hours } from "presentation/components/Hours";
 import { InputModel } from "domain/models/input/input";
 import { ReportHours } from "domain/usecases/report/report-hours";
 
-interface WorkedHoursProps {
+interface LunchHoursProps {
   inputs: InputModel[];
-  reportWorkedHours: ReportHours;
+  reportLunchHours: ReportHours;
 }
 
-const WorkedHours = ({ inputs, reportWorkedHours }: WorkedHoursProps) => {
+const LunchHours = ({ inputs, reportLunchHours }: LunchHoursProps) => {
   const [hours, setHours] = useState(0);
 
   useEffect(() => {
     if (inputs.length) {
-      reportWorkedHours.report(inputs).then((hours) => {
+      reportLunchHours.report(inputs).then((hours) => {
         setHours(hours);
       });
     }
-  }, [inputs, reportWorkedHours]);
+  }, [inputs, reportLunchHours]);
 
-  return <Hours ms={hours} label="Horas Trabalhadas" />;
+  return <Hours ms={hours} label="Horas em pausa" />;
 };
 
-export { WorkedHours };
+export { LunchHours };
