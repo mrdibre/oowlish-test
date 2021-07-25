@@ -1,5 +1,3 @@
-# Oowlish test
-
 https://oowlish-test-13cae.web.app/
 
 ## Stack
@@ -29,8 +27,3 @@ reload automatically
 - Improve the logic on calculate the worked hours, because it's very easy broke the current logic.
 - Do validations on log in
 
-
-##### Disclaimer
-
-My main goal here was the architecture of the project, and the organization of the code, so, for this
-reason I might not have reached all the requirements of the test. I hope you enjoy it.
